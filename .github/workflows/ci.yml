@@ -1,0 +1,60 @@
+name: CI (Plain Java)
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin       # AdoptOpenJDK/Temurin
+          java-version: '21'          # oder '17'
+
+      # JUnit Console Launcher (standalone) holen
+      - name: Download JUnit Console Standalone
+        run: |
+          curl -L -o junit-platform-console-standalone.jar \
+            https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.2/junit-platform-console-standalone-1.10.2.jar
+
+      # Kompilieren
+      - name: Compile sources
+        run: |
+          mkdir -p out/main out/test
+          # Produktivcode
+          if [ -d src/main/java ]; then
+            find src/main/java -name "*.java" > sources.txt
+            if [ -s sources.txt ]; then
+              javac -d out/main @sources.txt
+            fi
+          fi
+          # Testcode (braucht JUnit im Classpath + out/main)
+          if [ -d src/test/java ]; then
+            find src/test/java -name "*.java" > testsources.txt
+            if [ -s testsources.txt ]; then
+              javac -cp "out/main:junit-platform-console-standalone.jar" -d out/test @testsources.txt
+            fi
+          fi
+
+      # Tests ausführen (scannt Klassenpfad nach JUnit-Tests)
+      - name: Run tests (JUnit 5)
+        run: |
+          if [ -d out/test ]; then
+            java -jar junit-platform-console-standalone.jar \
+              -cp "out/main:out/test" \
+              --scan-classpath \
+              --fail-if-no-tests
+          else
+            echo "No tests found (out/test missing)"; exit 1
+          fi
+
+      # (Optional) Test-Reports als Artefakt sichern, falls du welche erzeugst
+      # - name: Upload reports
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-output
+      #     path: out/**
