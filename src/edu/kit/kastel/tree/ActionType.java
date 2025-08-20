@@ -2,7 +2,7 @@ package edu.kit.kastel.tree;
 
 import edu.kit.kastel.structure.Ladybug;
 
-public enum ActionType {
+public enum ActionType implements TreeNode {
 
     TURNLEFT("turnLeft") {
         @Override
@@ -57,6 +57,7 @@ public enum ActionType {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }

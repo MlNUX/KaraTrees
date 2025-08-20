@@ -2,7 +2,7 @@ package edu.kit.kastel.tree;
 
 import edu.kit.kastel.structure.*;
 
-public enum ConditionType {
+public enum ConditionType implements TreeNode {
 
     LEAFFRONT("leafFront") {
         @Override
@@ -51,6 +51,7 @@ public enum ConditionType {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }
