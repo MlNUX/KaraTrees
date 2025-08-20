@@ -1,12 +1,20 @@
 package edu.kit.kastel.command;
 
+import edu.kit.kastel.structure.GameManager;
+
 public class HeadCommand implements Command {
 
     private static final String COMMAND_NAME = "head";
 
     @Override
     public CommandFeedBack execute(String[] args) {
-        return null;
+        try {
+            return new CommandFeedBack(GameManager.getInstance().getCurrentNode(Integer.parseInt(args[0])), CommandFeedBackType.SUCCESS);
+        } catch (InvalidCommandException e) {
+            return new CommandFeedBack(e.getMessage(), CommandFeedBackType.FAILURE);
+        } catch (NumberFormatException e) {
+            return new CommandFeedBack(e.getMessage(), CommandFeedBackType.FAILURE);
+        }
     }
 
     @Override

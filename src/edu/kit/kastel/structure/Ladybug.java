@@ -7,12 +7,14 @@ public class Ladybug {
     private Direction direction;
     private int id;
     private GameManager gameManager;
+    private BehaviorTree behaviorTree;
 
     public Ladybug(Point point, Direction direction, int id) {
         this.position = point;
         this.direction = direction;
         this.id = id;
         this.gameManager = GameManager.getInstance();
+        this.behaviorTree = new BehaviorTree(this);
     }
 
     public int getId() {
@@ -33,6 +35,15 @@ public class Ladybug {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public void resetBehaviourTree() {
+        behaviorTree.reset();
+    }
+    
+    //Todo change to String
+    public TreeNode getCurrentNode() {
+        return behaviorTree.getCurrent().toString();
     }
 
     public boolean isLeafFront() {

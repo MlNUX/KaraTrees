@@ -14,6 +14,9 @@ import java.util.*;
  * @version Java 21
  */
 public class GameManager {
+
+    private static final String INVALID_BUG_MESSAGE = "Invalid bug number!";
+
     private static GameManager gameManager;
     private static final String BOARD_LAYOUT = "|%s|";
     private int width;
@@ -87,14 +90,23 @@ public class GameManager {
         if (ladybugs.size() > id) {
             return ladybugs.get(id).getPosition().toString();
         }
-        throw new InvalidCommandException("Error, ");
+        throw new InvalidCommandException(INVALID_BUG_MESSAGE);
     }
 
     public void resetLadybug(int id) throws InvalidCommandException {
         if (ladybugs.size() > id) {
-            //Todo: do shit
+            ladybugs.get(id).resetBehaviourTree();
+            return;
         }
-        throw new InvalidCommandException("invalid Bug!");
+        throw new InvalidCommandException(INVALID_BUG_MESSAGE);
+    }
+
+    public String getCurrentNode(int id) throws InvalidCommandException {
+        if (ladybugs.size() > id) {
+            return ladybugs.get(id).getCurrentNode();
+        }
+        throw new InvalidCommandException(INVALID_BUG_MESSAGE);
+
     }
 
     public void jumpTo(int id, String node) throws InvalidCommandException {

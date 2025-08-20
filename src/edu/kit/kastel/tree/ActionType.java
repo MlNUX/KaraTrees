@@ -6,48 +6,47 @@ public enum ActionType implements TreeNode {
 
     TURNLEFT("turnLeft") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.turnLeft();
         }
     },
 
     TURNRIGHT("turnRight") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.turnRight();
         }
     },
 
     PLACELEAF("placeLeaf") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.placeLeaf();
         }
     },
 
     TAKELEAF("takeLeaf") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.takeLeaf();
         }
     },
 
     MOVE("move") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.move();
         }
     },
 
     FLY("fly") {
         @Override
-        public boolean perform(Ladybug ladybug) {
-            return false;
-        }
-
-        @Override
-        boolean perform(Ladybug ladybug, int newX, int newY) {
-            return ladybug.fly(newX, newY);
+        public boolean perform(Ladybug ladybug, int... args) {
+            if (args.length == 2) {
+                return ladybug.fly(args[0], args[1]);
+            } else {
+                return false;
+            }
         }
     };
 
@@ -57,14 +56,7 @@ public enum ActionType implements TreeNode {
         this.name = name;
     }
 
-    @Override
     public String getName() {
         return name;
-    }
-
-    abstract boolean perform(Ladybug ladybug);
-
-    boolean perform(Ladybug ladybug, int x, int y) {
-        return false;
     }
 }

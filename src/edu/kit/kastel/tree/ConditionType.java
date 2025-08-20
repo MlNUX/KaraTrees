@@ -6,42 +6,38 @@ public enum ConditionType implements TreeNode {
 
     LEAFFRONT("leafFront") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.isLeafFront();
         }
     },
     TREEFRONT("treeFront") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.isTreeFront();
         }
     },
     MUSHROOMFRONT("mushroomFront") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.isMushroomFront();
         }
     },
     ATEDGE("atEdge") {
         @Override
-        public boolean perform(Ladybug ladybug) {
+        public boolean perform(Ladybug ladybug, int... args) {
             return ladybug.isAtEdge();
         }
     },
     EXISTSPath("existsPath") {
         @Override
-        public boolean perform(Ladybug ladybug) {
-            return false;
-        }
-
-        @Override
-        public boolean perform(int x, int y) {
-
-        }
-
-        @Override
-        public boolean perform(int x1, int y1, int x2, int y2) {
-
+        public boolean perform(Ladybug ladybug, int... args) {
+            if (args.length == 2) {
+                return true;
+            } else if (args.length == 4) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
 
@@ -51,18 +47,7 @@ public enum ConditionType implements TreeNode {
         this.name = name;
     }
 
-    @Override
     public String getName() {
         return name;
-    }
-
-    abstract boolean perform(Ladybug ladybug);
-
-    boolean perform(int x, int y) {
-        return false;
-    }
-
-    boolean perform(int x1, int y1, int x2, int y2) {
-        return false;
     }
 }
