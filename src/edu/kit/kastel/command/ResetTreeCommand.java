@@ -16,7 +16,6 @@ public class ResetTreeCommand implements Command {
         } catch (NumberFormatException e) {
             return new CommandFeedBack(e.getMessage(), CommandFeedBackType.FAILURE);
         }
-
     }
 
     @Override

@@ -14,6 +14,9 @@ import java.util.*;
  * @version Java 21
  */
 public class GameManager {
+
+    private static final String INVALID_BUG_ERROR = "invalid ladybug!";
+
     private static GameManager gameManager;
     private static final String BOARD_LAYOUT = "|%s|";
     private int width;
@@ -38,7 +41,7 @@ public class GameManager {
         try {
             lines = Files.readAllLines(FileSystems.getDefault().getPath(path));
         } catch (IOException e) {
-            throw new InvalidCommandException("Error, file not found!");
+            throw new InvalidCommandException("file not found!");
         }
         width = lines.getFirst().length();
         height = lines.size();
@@ -68,8 +71,21 @@ public class GameManager {
         return boardAsString.toString();
     }
 
+    // fertig machen
     public String loadTree(String path) throws InvalidCommandException {
-        //Todo das hier
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(FileSystems.getDefault().getPath(path));
+        } catch (IOException e) {
+            throw new InvalidCommandException("file not found!");
+        }
+        String pattern = "%s%s --> %s %s";
+        for (String line : lines) {
+
+        }
+        if (numberOfTrees > ladybugs.size()) {
+
+        }
         return null;
     }
 
@@ -87,18 +103,42 @@ public class GameManager {
         if (ladybugs.size() > id) {
             return ladybugs.get(id).getPosition().toString();
         }
-        throw new InvalidCommandException("Error, ");
+        throw new InvalidCommandException(INVALID_BUG_ERROR);
     }
 
     public void resetLadybug(int id) throws InvalidCommandException {
         if (ladybugs.size() > id) {
-            //Todo: do shit
+            ladybugs.get(id).getBehaviorTree().reset();
         }
-        throw new InvalidCommandException("invalid Bug!");
+        throw new InvalidCommandException(INVALID_BUG_ERROR);
     }
 
-    public void jumpTo(int id, String node) throws InvalidCommandException {
-        //Todo: shit
+    public String getCurrentBugNode(int id) throws InvalidCommandException {
+        if (ladybugs.size() > id) {
+            return ladybugs.get(id).getBehaviorTree().getCurrent().getSymbol();
+        }
+        throw new InvalidCommandException(INVALID_BUG_ERROR);
+    }
+
+    public void jumpTo(int id, String symbol) throws InvalidCommandException {
+        if (ladybugs.size() > id) {
+            ladybugs.get(id).getBehaviorTree().jumpToNode(symbol);
+        } else {
+            throw new InvalidCommandException(INVALID_BUG_ERROR);
+        }
+    }
+
+    public boolean existPath(int currentX, int currentY, int newX, int newY) {
+
+    }
+
+    // direkt durchpipen oder über bug?
+    // newNode syntax check
+    public void addSibling(int id, String parentSymbol, String newNode) throws InvalidCommandException {
+        if (ladybugs.size() > id) {
+            ladybugs.get(id).getBehaviorTree().addSibling(parentSymbol, newNode);
+        }
+        throw new InvalidCommandException(INVALID_BUG_ERROR);
     }
 
     private boolean isValidField(Point point) {
@@ -206,5 +246,6 @@ public class GameManager {
         return true;
 
     }
+
 
 }
