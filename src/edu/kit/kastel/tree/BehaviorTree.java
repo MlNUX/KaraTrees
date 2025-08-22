@@ -4,7 +4,7 @@ import edu.kit.kastel.structure.*;
 
 public class BehaviorTree {
 
-    private Node root;
+    private TreeNode root;
     private Ladybug ladybug;
 
     public BehaviorTree(Ladybug ladybug) {
@@ -12,7 +12,7 @@ public class BehaviorTree {
         this.ladybug = ladybug;
     }
 
-    public Node getRoot() {
+    public TreeNode getRoot() {
         return root;
     }
 

@@ -1,9 +1,37 @@
 package edu.kit.kastel.tree;
 
-import java.util.*;
+import edu.kit.kastel.structure.Ladybug;
 
-public abstract class InnerNode {
+import java.util.List;
 
-    private List<InnerNode> children;
+public enum InnerNode implements TreeNode {
 
+    FALLBACK("?") {
+        @Override
+        public boolean perform(Ladybug ladybug, int... args) {
+            return true;
+        }
+    },
+    SEQUENCE("->") {
+        @Override
+        public boolean perform(Ladybug ladybug, int... args) {
+            return true;
+        }
+    },
+    PARALLEL("=%s>") {
+        @Override
+        public boolean perform(Ladybug ladybug, int... args) {
+            return true;
+        }
+    };
+
+    private String symbol;
+
+    private List<TreeNode> children;
+
+    InnerNode(String symbol) {
+        this.symbol = symbol;
+    }
+
+    
 }
