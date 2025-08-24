@@ -1,7 +1,6 @@
 package edu.kit.kastel.structure;
 
 import edu.kit.kastel.command.*;
-import edu.kit.kastel.tree.Direction;
 
 import java.io.*;
 import java.nio.file.*;
@@ -16,6 +15,7 @@ import java.util.*;
 public class GameManager {
 
     private static final String INVALID_BUG_ERROR = "invalid ladybug!";
+
 
     private static GameManager gameManager;
     private static final String BOARD_LAYOUT = "|%s|";
@@ -71,24 +71,6 @@ public class GameManager {
         return boardAsString.toString();
     }
 
-    // fertig machen
-    public String loadTree(String path) throws InvalidCommandException {
-        List<String> lines;
-        try {
-            lines = Files.readAllLines(FileSystems.getDefault().getPath(path));
-        } catch (IOException e) {
-            throw new InvalidCommandException("file not found!");
-        }
-        String pattern = "%s%s --> %s %s";
-        for (String line : lines) {
-
-        }
-        if (numberOfTrees > ladybugs.size()) {
-
-        }
-        return null;
-    }
-
 
     public String listLadyBugs() {
         StringBuilder result = new StringBuilder();
@@ -128,8 +110,41 @@ public class GameManager {
         }
     }
 
-    public boolean existPath(int currentX, int currentY, int newX, int newY) {
+    private List<Point> getEmptyTiles(Point point) {
+        List<Point> emptyTiles = new ArrayList<>();
+        for (Direction direction : Direction.values()) {
+            Point emptyTile;
+            if (isFieldEmpty((emptyTile) = Point.scaleVektor(direction.getVektor(), point))) {
+                emptyTiles.add(emptyTile);
+            }
+        }
+        return emptyTiles;
 
+    }
+
+    public boolean existPath(int startX, int startY, int newX, int newY) {
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(new Point(startX, startY));
+        List<Point> isVisited = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            Point current = queue.poll();
+            if (current.getX() == newX && current.getY() == newY) {
+                return true;
+            }
+            for (Point next : getEmptyTiles(current)) {
+                if (!isVisited.contains(next)) {
+                    queue.add(next);
+                    isVisited.add(next);
+                }
+            }
+        }
+        return false;
+    }
+
+    public String nextAction() throws InvalidCommandException {
+        for (Ladybug ladybug : ladybugs) {
+            ladybug.performTree();
+        }
     }
 
     // direkt durchpipen oder über bug?

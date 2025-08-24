@@ -96,4 +96,5 @@ public class Ladybug {
     public boolean existPath(int currentX, int currentY, int newX, int newY) {
         return gameManager.existPath(currentX, currentY, newX, newY);
     }
+
 }
